@@ -47,12 +47,12 @@ This method executes a provided function once for each array element.
 
 **Example**  
 ```js
-var placeHolder = require('array-for-each-x');
+var forEach = require('array-for-each-x');
 
 var items = ['item1', 'item2', 'item3'];
 var copy = [];
 
-for (var i=0; i<items.length; i++) {
-  copy.push(items[i])
-}
+forEach(items, function(item){
+  copy.push(item)
+});
 ```
