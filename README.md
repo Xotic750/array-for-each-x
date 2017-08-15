@@ -23,7 +23,7 @@
 ## array-for-each-x
 Executes a provided function once for each array element.
 
-**Version**: 1.1.0  
+**Version**: 1.2.0  
 **Author**: Xotic750 <Xotic750@gmail.com>  
 **License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
 **Copyright**: Xotic750  
