@@ -1,6 +1,6 @@
 /**
  * @file Executes a provided function once for each array element.
- * @version 2.0.0
+ * @version 2.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -26,9 +26,9 @@ if (nativeForEach) {
     res = attempt.call(Object('abc'), nativeForEach, function (item) {
       spy += item;
     });
-  }
 
-  isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+  }
 
   if (isWorking) {
     spy = 0;
