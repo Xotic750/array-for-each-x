@@ -21,8 +21,7 @@ if (typeof module === 'object' && module.exports) {
   forEach = returnExports;
 }
 
-var documentElement = typeof document !== 'undefined' && document.documentElement;
-var itHasDocumentElement = documentElement ? it : xit;
+var itHasDoc = typeof document !== 'undefined' && document ? it : xit;
 
 var isStrict = (function () {
   // eslint-disable-next-line no-invalid-this
@@ -243,7 +242,7 @@ describe('forEach', function () {
     expect(callback).toHaveBeenCalledWith('1', 0, string);
   });
 
-  itHasDocumentElement('should work wih DOM elements', function () {
+  itHasDoc('should work wih DOM elements', function () {
     var fragment = document.createDocumentFragment();
     var div = document.createElement('div');
     fragment.appendChild(div);

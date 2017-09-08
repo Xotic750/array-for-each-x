@@ -1,6 +1,6 @@
 /**
  * @file Executes a provided function once for each array element.
- * @version 2.1.0
+ * @version 2.2.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,11 +9,11 @@
 
 'use strict';
 
-var attempt = require('attempt-x');
 var nativeForEach = typeof Array.prototype.forEach === 'function' && Array.prototype.forEach;
 
 var isWorking;
 if (nativeForEach) {
+  var attempt = require('attempt-x');
   var spy = 0;
   var res = attempt.call([1, 2], nativeForEach, function (item) {
     spy += item;
