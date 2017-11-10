@@ -1,6 +1,6 @@
 /**
  * @file Executes a provided function once for each array element.
- * @version 2.2.0
+ * @version 2.3.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
@@ -9,7 +9,10 @@
 
 'use strict';
 
-var nativeForEach = typeof Array.prototype.forEach === 'function' && Array.prototype.forEach;
+var cachedCtrs = require('cached-constructors-x');
+var ArrayCtr = cachedCtrs.Array;
+var castObject = cachedCtrs.Object;
+var nativeForEach = typeof ArrayCtr.prototype.forEach === 'function' && ArrayCtr.prototype.forEach;
 
 var isWorking;
 if (nativeForEach) {
@@ -23,7 +26,7 @@ if (nativeForEach) {
 
   if (isWorking) {
     spy = '';
-    res = attempt.call(Object('abc'), nativeForEach, function (item) {
+    res = attempt.call(castObject('abc'), nativeForEach, function (item) {
       spy += item;
     });
 
@@ -115,7 +118,7 @@ if (nativeForEach) {
   };
 } else {
   var splitIfBoxedBug = require('split-if-boxed-bug-x');
-  var toLength = require('to-length-x');
+  var toLength = require('to-length-x').toLength2018;
   var isUndefined = require('validate.io-undefined');
   var toObject = require('to-object-x');
   var assertIsFunction = require('assert-is-function-x');
