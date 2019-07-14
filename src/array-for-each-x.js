@@ -1,24 +1,24 @@
 /**
  * @file Executes a provided function once for each array element.
- * @version 2.3.0
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
+ * @version 2.3.0.
+ * @author Xotic750 <Xotic750@gmail.com>.
+ * @copyright  Xotic750.
  * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @module array-for-each-x
+ * @module Array-for-each-x.
  */
 
-'use strict';
+const cachedCtrs = require('cached-constructors-x');
 
-var cachedCtrs = require('cached-constructors-x');
-var ArrayCtr = cachedCtrs.Array;
-var castObject = cachedCtrs.Object;
-var nativeForEach = typeof ArrayCtr.prototype.forEach === 'function' && ArrayCtr.prototype.forEach;
+const ArrayCtr = cachedCtrs.Array;
+const castObject = cachedCtrs.Object;
+const nativeForEach = typeof ArrayCtr.prototype.forEach === 'function' && ArrayCtr.prototype.forEach;
 
-var isWorking;
+let isWorking;
+
 if (nativeForEach) {
-  var attempt = require('attempt-x');
-  var spy = 0;
-  var res = attempt.call([1, 2], nativeForEach, function (item) {
+  const attempt = require('attempt-x');
+  let spy = 0;
+  let res = attempt.call([1, 2], nativeForEach, function(item) {
     spy += item;
   });
 
@@ -26,7 +26,7 @@ if (nativeForEach) {
 
   if (isWorking) {
     spy = '';
-    res = attempt.call(castObject('abc'), nativeForEach, function (item) {
+    res = attempt.call(castObject('abc'), nativeForEach, function(item) {
       spy += item;
     });
 
@@ -35,38 +35,47 @@ if (nativeForEach) {
 
   if (isWorking) {
     spy = 0;
-    res = attempt.call((function () {
-      return arguments;
-    }(1, 2, 3)), nativeForEach, function (item) {
-      spy += item;
-    });
+    res = attempt.call(
+      (function() {
+        return arguments;
+      })(1, 2, 3),
+      nativeForEach,
+      function(item) {
+        spy += item;
+      },
+    );
 
     isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
   }
 
   if (isWorking) {
     spy = 0;
-    res = attempt.call({
-      0: 1,
-      1: 2,
-      3: 3,
-      4: 4,
-      length: 4
-    }, nativeForEach, function (item) {
-      spy += item;
-    });
+    res = attempt.call(
+      {
+        0: 1,
+        1: 2,
+        3: 3,
+        4: 4,
+        length: 4,
+      },
+      nativeForEach,
+      function(item) {
+        spy += item;
+      },
+    );
 
     isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
   }
 
   if (isWorking) {
-    var doc = typeof document !== 'undefined' && document;
+    const doc = typeof document !== 'undefined' && document;
+
     if (doc) {
       spy = null;
-      var fragment = doc.createDocumentFragment();
-      var div = doc.createElement('div');
+      const fragment = doc.createDocumentFragment();
+      const div = doc.createElement('div');
       fragment.appendChild(div);
-      res = attempt.call(fragment.childNodes, nativeForEach, function (item) {
+      res = attempt.call(fragment.childNodes, nativeForEach, function(item) {
         spy = item;
       });
 
@@ -75,17 +84,22 @@ if (nativeForEach) {
   }
 
   if (isWorking) {
-    var isStrict = (function () {
+    const isStrict = (function() {
       // eslint-disable-next-line no-invalid-this
       return Boolean(this) === false;
-    }());
+    })();
 
     if (isStrict) {
       spy = null;
-      res = attempt.call([1], nativeForEach, function () {
-        // eslint-disable-next-line no-invalid-this
-        spy = typeof this === 'string';
-      }, 'x');
+      res = attempt.call(
+        [1],
+        nativeForEach,
+        function() {
+          // eslint-disable-next-line no-invalid-this
+          spy = typeof this === 'string';
+        },
+        'x',
+      );
 
       isWorking = res.threw === false && typeof res.value === 'undefined' && spy === true;
     }
@@ -93,10 +107,10 @@ if (nativeForEach) {
 
   if (isWorking) {
     spy = {};
-    var fn = [
+    const fn = [
       'return nativeForEach.call("foo", function (_, __, context) {',
       'if (Boolean(context) === false || typeof context !== "object") {',
-      'spy.value = true;}});'
+      'spy.value = true;}});',
     ].join('');
 
     // eslint-disable-next-line no-new-func
@@ -106,10 +120,12 @@ if (nativeForEach) {
   }
 }
 
-var $forEach;
+let $forEach;
+
 if (nativeForEach) {
   $forEach = function forEach(array, callBack /* , thisArg */) {
-    var args = [callBack];
+    const args = [callBack];
+
     if (arguments.length > 2) {
       args[1] = arguments[2];
     }
@@ -117,25 +133,26 @@ if (nativeForEach) {
     return nativeForEach.apply(array, args);
   };
 } else {
-  var splitIfBoxedBug = require('split-if-boxed-bug-x');
-  var toLength = require('to-length-x').toLength2018;
-  var isUndefined = require('validate.io-undefined');
-  var toObject = require('to-object-x');
-  var assertIsFunction = require('assert-is-function-x');
+  const splitIfBoxedBug = require('split-if-boxed-bug-x');
+  const toLength = require('to-length-x').toLength2018;
+  const isUndefined = require('validate.io-undefined');
+  const toObject = require('to-object-x');
+  const assertIsFunction = require('assert-is-function-x');
 
   $forEach = function forEach(array, callBack /* , thisArg */) {
-    var object = toObject(array);
+    const object = toObject(array);
     // If no callback function or if callback is not a callable function
     assertIsFunction(callBack);
-    var iterable = splitIfBoxedBug(object);
-    var length = toLength(iterable.length);
-    var thisArg;
+    const iterable = splitIfBoxedBug(object);
+    const length = toLength(iterable.length);
+    let thisArg;
+
     if (arguments.length > 2) {
       thisArg = arguments[2];
     }
 
-    var noThis = isUndefined(thisArg);
-    for (var i = 0; i < length; i += 1) {
+    const noThis = isUndefined(thisArg);
+    for (let i = 0; i < length; i += 1) {
       if (i in iterable) {
         if (noThis) {
           callBack(iterable[i], i, object);
@@ -150,13 +167,13 @@ if (nativeForEach) {
 /**
  * This method executes a provided function once for each array element.
  *
- * @param {array} array - The array to iterate over.
+ * @param {Array} array - The array to iterate over.
  * @param {Function} callBack - Function to execute for each element.
  * @param {*} [thisArg] - Value to use as this when executing callback.
  * @throws {TypeError} If array is null or undefined.
  * @throws {TypeError} If callBack is not a function.
  * @example
- * var forEach = require('array-for-each-x');
+ * var forEach = require('array-for-each-x');.
  *
  * var items = ['item1', 'item2', 'item3'];
  * var copy = [];
