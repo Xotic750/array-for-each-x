@@ -1,6 +1,6 @@
 {
   "name": "array-for-each-x",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Executes a provided function once for each array element.",
   "homepage": "https://github.com/Xotic750/array-for-each-x",
   "author": {
@@ -52,7 +52,7 @@
     "assert-is-function-x": "^3.0.1",
     "attempt-x": "^2.0.4",
     "split-if-boxed-bug-x": "^2.0.4",
-    "to-length-x": "^4.0.2",
+    "to-length-x": "^4.0.3",
     "to-object-x": "^2.0.1"
   },
   "devDependencies": {
