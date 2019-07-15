@@ -21,15 +21,13 @@
 <a name="module_array-for-each-x"></a>
 
 ## array-for-each-x
+
 Executes a provided function once for each array element.
 
-**Version**: 2.3.0  
-**Author**: Xotic750 <Xotic750@gmail.com>  
-**License**: [MIT](&lt;https://opensource.org/licenses/MIT&gt;)  
-**Copyright**: Xotic750  
 <a name="exp_module_array-for-each-x--module.exports"></a>
 
 ### `module.exports` ⏏
+
 This method executes a provided function once for each array element.
 
 **Kind**: Exported member  
@@ -38,21 +36,23 @@ This method executes a provided function once for each array element.
 - <code>TypeError</code> If array is null or undefined.
 - <code>TypeError</code> If callBack is not a function.
 
+| Param     | Type                  | Description                                   |
+| --------- | --------------------- | --------------------------------------------- |
+| array     | <code>array</code>    | The array to iterate over.                    |
+| callBack  | <code>function</code> | Function to execute for each element.         |
+| [thisArg] | <code>\*</code>       | Value to use as this when executing callback. |
 
-| Param | Type | Description |
-| --- | --- | --- |
-| array | <code>array</code> | The array to iterate over. |
-| callBack | <code>function</code> | Function to execute for each element. |
-| [thisArg] | <code>\*</code> | Value to use as this when executing callback. |
+**Example**
 
-**Example**  
 ```js
-var forEach = require('array-for-each-x');
+import forEach from 'array-for-each-x';
 
-var items = ['item1', 'item2', 'item3'];
-var copy = [];
+const items = ['item1', 'item2', 'item3'];
+const copy = [];
 
-forEach(items, function(item){
-  copy.push(item)
+forEach(items, function(item) {
+  copy.push(item);
 });
+
+console.log(copy); // ['item1', 'item2', 'item3']
 ```

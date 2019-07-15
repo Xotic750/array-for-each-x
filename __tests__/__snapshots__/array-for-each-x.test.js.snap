@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`forEach should throw when array is null or undefined 1`] = `"Array.prototype.forEach called on null or undefined"`;
+
+exports[`forEach should throw when array is null or undefined 2`] = `"Array.prototype.forEach called on null or undefined"`;
+
+exports[`forEach should throw when array is null or undefined 3`] = `"Array.prototype.forEach called on null or undefined"`;
