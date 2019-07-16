@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-15T13:14:29.890Z",
+  "date": "2019-07-16T10:56:23.864Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "924de4e6c7422125dae4",
+  "hash": "b92ea63aff4484b65f3d",
   "license": "MIT",
-  "version": "3.0.1"
+  "version": "3.0.2"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1697,151 +1697,6 @@ function toObject(value) {
 }
 
 
-// CONCATENATED MODULE: ./node_modules/assert-is-function-x/node_modules/trim-x/dist/trim-x.esm.js
-
-
-/**
- * This method removes whitespace from the left and right end of a string.
- * (ES2016).
- *
- * @param {string} [string] - The string to trim the whitespace from.
- * @throws {TypeError} If string is null or undefined or not coercible.
- * @returns {string} The trimmed string.
- */
-
-function trim_x_esm_trim2016(string) {
-  return trimLeft2016(trimRight2016(string));
-}
-/**
- * This method removes whitespace from the left and right end of a string.
- * (ES2018).
- *
- * @param {string} [string] - The string to trim the whitespace from.
- * @throws {TypeError} If string is null or undefined or not coercible.
- * @returns {string} The trimmed string.
- */
-
-function trim_x_esm_trim2018(string) {
-  return trimLeft2018(trimRight2018(string));
-}
-
-
-// CONCATENATED MODULE: ./node_modules/assert-is-function-x/node_modules/normalize-space-x/dist/normalize-space-x.esm.js
-
-
-var normalize_space_x_esm_SPACE = ' ';
-var dist_normalize_space_x_esm_RegExpCtr = /none/.constructor;
-var normalize_space_x_esm_reNormalize2016 = new dist_normalize_space_x_esm_RegExpCtr("[".concat(string2016, "]+"), 'g');
-var normalize_space_x_esm_reNormalize2018 = new dist_normalize_space_x_esm_RegExpCtr("[".concat(white_space_x_esm, "]+"), 'g');
-var dist_normalize_space_x_esm_replace = normalize_space_x_esm_SPACE.replace;
-/**
- * This method strips leading and trailing white-space from a string,
- * replaces sequences of whitespace characters by a single space,
- * and returns the resulting string. (ES2016).
- *
- * @param {string} [string] - The string to be normalized.
- * @throws {TypeError} If string is null or undefined or not coercible.
- * @returns {string} The normalized string.
- */
-
-function normalize_space_x_esm_normalizeSpace2016(string) {
-  return dist_normalize_space_x_esm_replace.call(trim_x_esm_trim2016(string), normalize_space_x_esm_reNormalize2016, normalize_space_x_esm_SPACE);
-}
-/**
- * This method strips leading and trailing white-space from a string,
- * replaces sequences of whitespace characters by a single space,
- * and returns the resulting string. (ES2018).
- *
- * @param {string} [string] - The string to be normalized.
- * @throws {TypeError} If string is null or undefined or not coercible.
- */
-
-function normalize_space_x_esm_normalizeSpace2018(string) {
-  return dist_normalize_space_x_esm_replace.call(trim_x_esm_trim2018(string), normalize_space_x_esm_reNormalize2018, normalize_space_x_esm_SPACE);
-}
-
-
-// CONCATENATED MODULE: ./node_modules/assert-is-function-x/node_modules/is-function-x/dist/is-function-x.esm.js
-var dist_is_function_x_esm_this = undefined;
-
-function dist_is_function_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
-
-
-
-
-
-
-
-
-var dist_is_function_x_esm_SPACE = ' ';
-var is_function_x_esm_fToString = Function.prototype.toString;
-var is_function_x_esm_funcTag = '[object Function]';
-var is_function_x_esm_genTag = '[object GeneratorFunction]';
-var is_function_x_esm_asyncTag = '[object AsyncFunction]';
-var is_function_x_esm_ctrRx = /^class /;
-var is_function_x_esm_test = is_function_x_esm_ctrRx.test;
-var is_function_x_esm_hasNativeClass = attempt(function () {
-  dist_is_function_x_esm_newArrowCheck(this, dist_is_function_x_esm_this);
-
-  /* eslint-disable-next-line no-new-func */
-  return Function('"use strict"; return class My {};')();
-}.bind(undefined)).threw === false;
-
-var is_function_x_esm_testClassstring = function _testClassstring(value) {
-  return is_function_x_esm_test.call(is_function_x_esm_ctrRx, normalize_space_x_esm_normalizeSpace2018(replaceComments(is_function_x_esm_fToString.call(value), dist_is_function_x_esm_SPACE)));
-};
-
-var is_function_x_esm_isES6ClassFn = function isES6ClassFunc(value) {
-  var result = attempt(is_function_x_esm_testClassstring, value);
-  return result.threw === false && result.value;
-};
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @private
- * @param {*} value - The value to check.
- * @param {boolean} allowClass - Whether to filter ES6 classes.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- * else `false`.
- */
-
-
-var is_function_x_esm_tryFuncToString = function funcToString(value, allowClass) {
-  if (is_function_x_esm_hasNativeClass && allowClass === false && is_function_x_esm_isES6ClassFn(value)) {
-    return false;
-  }
-
-  return attempt.call(value, is_function_x_esm_fToString).threw === false;
-};
-/**
- * Checks if `value` is classified as a `Function` object.
- *
- * @param {*} value - The value to check.
- * @param {boolean} [allowClass=false] - Whether to filter ES6 classes.
- * @returns {boolean} Returns `true` if `value` is correctly classified,
- * else `false`.
- */
-
-
-function is_function_x_esm_isFunction(value, allowClass) {
-  if (is_primitive_default()(value)) {
-    return false;
-  }
-
-  if (has_to_string_tag_x_esm) {
-    return is_function_x_esm_tryFuncToString(value, toBoolean(allowClass));
-  }
-
-  if (is_function_x_esm_hasNativeClass && isFalsey(allowClass) && is_function_x_esm_isES6ClassFn(value)) {
-    return false;
-  }
-
-  var strTag = toStringTag(value);
-  return strTag === is_function_x_esm_funcTag || strTag === is_function_x_esm_genTag || strTag === is_function_x_esm_asyncTag;
-}
-
-
 // CONCATENATED MODULE: ./node_modules/to-string-symbols-supported-x/dist/to-string-symbols-supported-x.esm.js
 
 
@@ -1881,7 +1736,7 @@ function toStringSymbolsSupported(value) {
  */
 
 function assertIsFunction(callback) {
-  if (is_function_x_esm_isFunction(callback) === false) {
+  if (isFunction(callback) === false) {
     var msg = is_primitive_default()(callback) ? toStringSymbolsSupported(callback) : '#<Object>';
     throw new TypeError("".concat(msg, " is not a function"));
   }
