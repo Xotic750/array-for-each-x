@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T14:26:37.140Z",
+  "date": "2019-07-27T19:01:46.493Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "9dbf7268a706bd6cca99",
+  "hash": "d71d8dde108266ece27f",
   "license": "MIT",
   "version": "3.0.19"
 }
@@ -1601,6 +1601,7 @@ function array_for_each_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThi
 
 
 
+
 var nfe = [].forEach;
 var nativeForEach = typeof nfe === 'function' && nfe;
 
@@ -1673,7 +1674,7 @@ var array_for_each_x_esm_test5 = function test5() {
 var array_for_each_x_esm_test6 = function test6() {
   var isStrict = function returnIsStrict() {
     /* eslint-disable-next-line babel/no-invalid-this */
-    return true.constructor(this) === false;
+    return to_boolean_x_esm(this) === false;
   }();
 
   if (isStrict) {
@@ -1690,14 +1691,14 @@ var array_for_each_x_esm_test6 = function test6() {
 
 var array_for_each_x_esm_test7 = function test7() {
   var spy = {};
-  var fn = 'return nativeForEach.call("foo", function (_, __, context) {' + 'if (castBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
+  var fn = 'return nativeForEach.call("foo", function (_, __, context) {' + 'if (toBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
   /* eslint-disable-next-line no-new-func */
 
-  var res = attempt_x_esm(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy, true.constructor);
+  var res = attempt_x_esm(Function('nativeForEach', 'spy', 'toBoolean', fn), nativeForEach, spy, to_boolean_x_esm);
   return res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
 };
 
-var isWorking = true.constructor(nativeForEach) && array_for_each_x_esm_test1() && array_for_each_x_esm_test2() && array_for_each_x_esm_test3() && array_for_each_x_esm_test4() && array_for_each_x_esm_test5() && array_for_each_x_esm_test6() && array_for_each_x_esm_test7();
+var isWorking = to_boolean_x_esm(nativeForEach) && array_for_each_x_esm_test1() && array_for_each_x_esm_test2() && array_for_each_x_esm_test3() && array_for_each_x_esm_test4() && array_for_each_x_esm_test5() && array_for_each_x_esm_test6() && array_for_each_x_esm_test7();
 
 var array_for_each_x_esm_patchedNative = function patchedNative() {
   return function forEach(array, callBack

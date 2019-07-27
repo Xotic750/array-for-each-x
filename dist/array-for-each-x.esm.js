@@ -6,6 +6,7 @@ import toLength from 'to-length-x';
 import toObject from 'to-object-x';
 import assertIsFunction from 'assert-is-function-x';
 import requireObjectCoercible from 'require-object-coercible-x';
+import toBoolean from 'to-boolean-x';
 var nfe = [].forEach;
 var nativeForEach = typeof nfe === 'function' && nfe;
 
@@ -78,7 +79,7 @@ var test5 = function test5() {
 var test6 = function test6() {
   var isStrict = function returnIsStrict() {
     /* eslint-disable-next-line babel/no-invalid-this */
-    return true.constructor(this) === false;
+    return toBoolean(this) === false;
   }();
 
   if (isStrict) {
@@ -95,14 +96,14 @@ var test6 = function test6() {
 
 var test7 = function test7() {
   var spy = {};
-  var fn = 'return nativeForEach.call("foo", function (_, __, context) {' + 'if (castBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
+  var fn = 'return nativeForEach.call("foo", function (_, __, context) {' + 'if (toBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
   /* eslint-disable-next-line no-new-func */
 
-  var res = attempt(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy, true.constructor);
+  var res = attempt(Function('nativeForEach', 'spy', 'toBoolean', fn), nativeForEach, spy, toBoolean);
   return res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
 };
 
-var isWorking = true.constructor(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
+var isWorking = toBoolean(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
 var patchedNative = function patchedNative() {
   return function forEach(array, callBack
