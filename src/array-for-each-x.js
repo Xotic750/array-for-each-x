@@ -34,7 +34,7 @@ const test3 = function test3() {
       return arguments;
     })(1, 2, 3),
     nativeForEach,
-    function spyAdd(item) {
+    function spyAdd1(item) {
       spy += item;
     },
   );
@@ -53,7 +53,7 @@ const test4 = function test4() {
       length: 4,
     },
     nativeForEach,
-    function spyAdd(item) {
+    function spyAdd2(item) {
       spy += item;
     },
   );
