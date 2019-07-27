@@ -38,7 +38,7 @@ var test3 = function test3() {
   var res = attempt.call(function getArgs() {
     /* eslint-disable-next-line prefer-rest-params */
     return arguments;
-  }(1, 2, 3), nativeForEach, function spyAdd(item) {
+  }(1, 2, 3), nativeForEach, function spyAdd1(item) {
     spy += item;
   });
   return res.threw === false && typeof res.value === 'undefined' && spy === 6;
@@ -52,7 +52,7 @@ var test4 = function test4() {
     3: 3,
     4: 4,
     length: 4
-  }, nativeForEach, function spyAdd(item) {
+  }, nativeForEach, function spyAdd2(item) {
     spy += item;
   });
   return res.threw === false && typeof res.value === 'undefined' && spy === 6;
@@ -103,20 +103,9 @@ var test7 = function test7() {
 };
 
 var isWorking = true.constructor(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
-/**
- * This method executes a provided function once for each array element.
- *
- * @param {Array} array - The array to iterate over.
- * @param {Function} callBack - Function to execute for each element.
- * @param {*} [thisArg] - Value to use as this when executing callback.
- * @throws {TypeError} If array is null or undefined.
- * @throws {TypeError} If callBack is not a function.
- */
 
-var $forEach;
-
-if (isWorking) {
-  $forEach = function forEach(array, callBack
+var patchedNative = function patchedNative() {
+  return function forEach(array, callBack
   /* , thisArg */
   ) {
     requireObjectCoercible(array);
@@ -129,8 +118,10 @@ if (isWorking) {
 
     return nativeForEach.apply(array, args);
   };
-} else {
-  $forEach = function forEach(array, callBack
+};
+
+var implimentation = function implimentation() {
+  return function forEach(array, callBack
   /* , thisArg */
   ) {
     var object = toObject(array); // If no callback function or if callback is not a callable function
@@ -157,9 +148,19 @@ if (isWorking) {
       }
     }
   };
-}
+};
+/**
+ * This method executes a provided function once for each array element.
+ *
+ * @param {Array} array - The array to iterate over.
+ * @param {Function} callBack - Function to execute for each element.
+ * @param {*} [thisArg] - Value to use as this when executing callback.
+ * @throws {TypeError} If array is null or undefined.
+ * @throws {TypeError} If callBack is not a function.
+ */
 
-var arrayForEach = $forEach;
-export default arrayForEach;
+
+var $forEach = isWorking ? patchedNative() : implimentation();
+export default $forEach;
 
 //# sourceMappingURL=array-for-each-x.esm.js.map

@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T09:58:29.726Z",
+  "date": "2019-07-27T10:09:45.384Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "437279670f1d13867d11",
+  "hash": "e4d3e34cfddeebef0df6",
   "license": "MIT",
   "version": "3.0.18"
 }
@@ -1635,7 +1635,7 @@ var array_for_each_x_esm_test3 = function test3() {
   var res = attempt_x_esm.call(function getArgs() {
     /* eslint-disable-next-line prefer-rest-params */
     return arguments;
-  }(1, 2, 3), nativeForEach, function spyAdd(item) {
+  }(1, 2, 3), nativeForEach, function spyAdd1(item) {
     spy += item;
   });
   return res.threw === false && typeof res.value === 'undefined' && spy === 6;
@@ -1649,7 +1649,7 @@ var array_for_each_x_esm_test4 = function test4() {
     3: 3,
     4: 4,
     length: 4
-  }, nativeForEach, function spyAdd(item) {
+  }, nativeForEach, function spyAdd2(item) {
     spy += item;
   });
   return res.threw === false && typeof res.value === 'undefined' && spy === 6;
@@ -1700,20 +1700,9 @@ var array_for_each_x_esm_test7 = function test7() {
 };
 
 var isWorking = true.constructor(nativeForEach) && array_for_each_x_esm_test1() && array_for_each_x_esm_test2() && array_for_each_x_esm_test3() && array_for_each_x_esm_test4() && array_for_each_x_esm_test5() && array_for_each_x_esm_test6() && array_for_each_x_esm_test7();
-/**
- * This method executes a provided function once for each array element.
- *
- * @param {Array} array - The array to iterate over.
- * @param {Function} callBack - Function to execute for each element.
- * @param {*} [thisArg] - Value to use as this when executing callback.
- * @throws {TypeError} If array is null or undefined.
- * @throws {TypeError} If callBack is not a function.
- */
 
-var $forEach;
-
-if (isWorking) {
-  $forEach = function forEach(array, callBack
+var array_for_each_x_esm_patchedNative = function patchedNative() {
+  return function forEach(array, callBack
   /* , thisArg */
   ) {
     require_object_coercible_x_esm(array);
@@ -1726,8 +1715,10 @@ if (isWorking) {
 
     return nativeForEach.apply(array, args);
   };
-} else {
-  $forEach = function forEach(array, callBack
+};
+
+var array_for_each_x_esm_implimentation = function implimentation() {
+  return function forEach(array, callBack
   /* , thisArg */
   ) {
     var object = to_object_x_esm(array); // If no callback function or if callback is not a callable function
@@ -1754,10 +1745,20 @@ if (isWorking) {
       }
     }
   };
-}
+};
+/**
+ * This method executes a provided function once for each array element.
+ *
+ * @param {Array} array - The array to iterate over.
+ * @param {Function} callBack - Function to execute for each element.
+ * @param {*} [thisArg] - Value to use as this when executing callback.
+ * @throws {TypeError} If array is null or undefined.
+ * @throws {TypeError} If callBack is not a function.
+ */
 
-var arrayForEach = $forEach;
-/* harmony default export */ var array_for_each_x_esm = __webpack_exports__["default"] = (arrayForEach);
+
+var $forEach = isWorking ? array_for_each_x_esm_patchedNative() : array_for_each_x_esm_implimentation();
+/* harmony default export */ var array_for_each_x_esm = __webpack_exports__["default"] = ($forEach);
 
 
 

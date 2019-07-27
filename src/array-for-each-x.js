@@ -118,19 +118,8 @@ const test7 = function test7() {
 
 const isWorking = true.constructor(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
-/**
- * This method executes a provided function once for each array element.
- *
- * @param {Array} array - The array to iterate over.
- * @param {Function} callBack - Function to execute for each element.
- * @param {*} [thisArg] - Value to use as this when executing callback.
- * @throws {TypeError} If array is null or undefined.
- * @throws {TypeError} If callBack is not a function.
- */
-let $forEach;
-
-if (isWorking) {
-  $forEach = function forEach(array, callBack /* , thisArg */) {
+const patchedNative = function patchedNative() {
+  return function forEach(array, callBack /* , thisArg */) {
     requireObjectCoercible(array);
     const args = [assertIsFunction(callBack)];
 
@@ -141,8 +130,10 @@ if (isWorking) {
 
     return nativeForEach.apply(array, args);
   };
-} else {
-  $forEach = function forEach(array, callBack /* , thisArg */) {
+};
+
+const implimentation = function implimentation() {
+  return function forEach(array, callBack /* , thisArg */) {
     const object = toObject(array);
     // If no callback function or if callback is not a callable function
     assertIsFunction(callBack);
@@ -166,8 +157,17 @@ if (isWorking) {
       }
     }
   };
-}
+};
 
-const arrayForEach = $forEach;
+/**
+ * This method executes a provided function once for each array element.
+ *
+ * @param {Array} array - The array to iterate over.
+ * @param {Function} callBack - Function to execute for each element.
+ * @param {*} [thisArg] - Value to use as this when executing callback.
+ * @throws {TypeError} If array is null or undefined.
+ * @throws {TypeError} If callBack is not a function.
+ */
+const $forEach = isWorking ? patchedNative() : implimentation();
 
-export default arrayForEach;
+export default $forEach;
