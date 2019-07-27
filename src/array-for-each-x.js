@@ -132,20 +132,15 @@ const patchedNative = function patchedNative() {
   };
 };
 
-const implimentation = function implimentation() {
+const implementation = function implementation() {
   return function forEach(array, callBack /* , thisArg */) {
     const object = toObject(array);
     // If no callback function or if callback is not a callable function
     assertIsFunction(callBack);
     const iterable = splitIfBoxedBug(object);
     const length = toLength(iterable.length);
-    let thisArg;
-
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      thisArg = arguments[2];
-    }
-
+    /* eslint-disable-next-line no-void,prefer-rest-params */
+    const thisArg = arguments.length > 2 ? arguments[2] : void 0;
     const noThis = typeof thisArg === 'undefined';
     for (let i = 0; i < length; i += 1) {
       if (i in iterable) {
@@ -168,6 +163,6 @@ const implimentation = function implimentation() {
  * @throws {TypeError} If array is null or undefined.
  * @throws {TypeError} If callBack is not a function.
  */
-const $forEach = isWorking ? patchedNative() : implimentation();
+const $forEach = isWorking ? patchedNative() : implementation();
 
 export default $forEach;

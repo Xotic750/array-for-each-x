@@ -120,7 +120,7 @@ var patchedNative = function patchedNative() {
   };
 };
 
-var implimentation = function implimentation() {
+var implementation = function implementation() {
   return function forEach(array, callBack
   /* , thisArg */
   ) {
@@ -129,13 +129,9 @@ var implimentation = function implimentation() {
     assertIsFunction(callBack);
     var iterable = splitIfBoxedBug(object);
     var length = toLength(iterable.length);
-    var thisArg;
+    /* eslint-disable-next-line no-void,prefer-rest-params */
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      thisArg = arguments[2];
-    }
-
+    var thisArg = arguments.length > 2 ? arguments[2] : void 0;
     var noThis = typeof thisArg === 'undefined';
 
     for (var i = 0; i < length; i += 1) {
@@ -160,7 +156,7 @@ var implimentation = function implimentation() {
  */
 
 
-var $forEach = isWorking ? patchedNative() : implimentation();
+var $forEach = isWorking ? patchedNative() : implementation();
 export default $forEach;
 
 //# sourceMappingURL=array-for-each-x.esm.js.map

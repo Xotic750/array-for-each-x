@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T10:09:45.384Z",
+  "date": "2019-07-27T14:26:37.140Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "e4d3e34cfddeebef0df6",
+  "hash": "9dbf7268a706bd6cca99",
   "license": "MIT",
-  "version": "3.0.18"
+  "version": "3.0.19"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -1322,8 +1322,6 @@ var binaryRadix = 2;
 var octalRadix = 8;
 var testCharsCount = 2;
 var to_number_x_esm_ERROR_MESSAGE = 'Cannot convert a Symbol value to a number';
-/** @type {NumberConstructor} */
-
 var to_number_x_esm_castNumber = testCharsCount.constructor;
 var pStrSlice = to_number_x_esm_ERROR_MESSAGE.slice;
 var binaryRegex = /^0b[01]+$/i;
@@ -1717,7 +1715,7 @@ var array_for_each_x_esm_patchedNative = function patchedNative() {
   };
 };
 
-var array_for_each_x_esm_implimentation = function implimentation() {
+var array_for_each_x_esm_implementation = function implementation() {
   return function forEach(array, callBack
   /* , thisArg */
   ) {
@@ -1726,13 +1724,9 @@ var array_for_each_x_esm_implimentation = function implimentation() {
     assert_is_function_x_esm(callBack);
     var iterable = split_if_boxed_bug_x_esm(object);
     var length = to_length_x_esm(iterable.length);
-    var thisArg;
+    /* eslint-disable-next-line no-void,prefer-rest-params */
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      thisArg = arguments[2];
-    }
-
+    var thisArg = arguments.length > 2 ? arguments[2] : void 0;
     var noThis = typeof thisArg === 'undefined';
 
     for (var i = 0; i < length; i += 1) {
@@ -1757,7 +1751,7 @@ var array_for_each_x_esm_implimentation = function implimentation() {
  */
 
 
-var $forEach = isWorking ? array_for_each_x_esm_patchedNative() : array_for_each_x_esm_implimentation();
+var $forEach = isWorking ? array_for_each_x_esm_patchedNative() : array_for_each_x_esm_implementation();
 /* harmony default export */ var array_for_each_x_esm = __webpack_exports__["default"] = ($forEach);
 
 
