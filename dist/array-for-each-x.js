@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T01:12:03.955Z",
+  "date": "2019-07-27T09:58:29.726Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "0d2ca7f1ba4b31a65758",
+  "hash": "437279670f1d13867d11",
   "license": "MIT",
   "version": "3.0.18"
 }
@@ -424,14 +424,14 @@ var is_symbol = __webpack_require__(0);
 var is_symbol_default = /*#__PURE__*/__webpack_require__.n(is_symbol);
 
 // CONCATENATED MODULE: ./node_modules/has-symbol-support-x/dist/has-symbol-support-x.esm.js
-var _this = undefined;
+var has_symbol_support_x_esm_this = undefined;
 
 function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
 
 var hasSymbolSupport = attempt_x_esm(function () {
-  _newArrowCheck(this, _this);
+  _newArrowCheck(this, has_symbol_support_x_esm_this);
 
   /* eslint-disable-next-line compat/compat */
   return typeof Symbol === 'function' && is_symbol_default()(Symbol(''));
@@ -1595,8 +1595,6 @@ var assert_is_function_x_esm_assertIsFunction = function assertIsFunction(callba
 
 
 // CONCATENATED MODULE: ./dist/array-for-each-x.esm.js
-var array_for_each_x_esm_this = undefined;
-
 function array_for_each_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
@@ -1604,110 +1602,104 @@ function array_for_each_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThi
 
 
 
-/** @type {ArrayConstructor} */
 
-var ArrayCtr = [].constructor;
-/** @type {ObjectConstructor} */
+var nfe = [].forEach;
+var nativeForEach = typeof nfe === 'function' && nfe;
 
-var array_for_each_x_esm_castObject = {}.constructor;
-/** @type {BooleanConstructor} */
+var array_for_each_x_esm_test1 = function test1() {
+  var _this = this;
 
-var array_for_each_x_esm_castBoolean = true.constructor;
-var nativeForEach = typeof ArrayCtr.prototype.forEach === 'function' && ArrayCtr.prototype.forEach;
-var isWorking;
-
-if (nativeForEach) {
   var spy = 0;
   var res = attempt_x_esm.call([1, 2], nativeForEach, function (item) {
-    array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
+    array_for_each_x_esm_newArrowCheck(this, _this);
 
     spy += item;
-  }.bind(undefined));
-  isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 3;
+  }.bind(this));
+  return res.threw === false && typeof res.value === 'undefined' && spy === 3;
+};
 
-  if (isWorking) {
-    spy = '';
-    res = attempt_x_esm.call(array_for_each_x_esm_castObject('abc'), nativeForEach, function (item) {
-      array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
+var array_for_each_x_esm_test2 = function test2() {
+  var _this2 = this;
 
-      spy += item;
-    }.bind(undefined));
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+  var spy = '';
+  var res = attempt_x_esm.call({}.constructor('abc'), nativeForEach, function (item) {
+    array_for_each_x_esm_newArrowCheck(this, _this2);
+
+    spy += item;
+  }.bind(this));
+  return res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+};
+
+var array_for_each_x_esm_test3 = function test3() {
+  var spy = 0;
+  var res = attempt_x_esm.call(function getArgs() {
+    /* eslint-disable-next-line prefer-rest-params */
+    return arguments;
+  }(1, 2, 3), nativeForEach, function spyAdd(item) {
+    spy += item;
+  });
+  return res.threw === false && typeof res.value === 'undefined' && spy === 6;
+};
+
+var array_for_each_x_esm_test4 = function test4() {
+  var spy = 0;
+  var res = attempt_x_esm.call({
+    0: 1,
+    1: 2,
+    3: 3,
+    4: 4,
+    length: 4
+  }, nativeForEach, function spyAdd(item) {
+    spy += item;
+  });
+  return res.threw === false && typeof res.value === 'undefined' && spy === 6;
+};
+
+var array_for_each_x_esm_test5 = function test5() {
+  var doc = typeof document !== 'undefined' && document;
+
+  if (doc) {
+    var spy = null;
+    var fragment = doc.createDocumentFragment();
+    var div = doc.createElement('div');
+    fragment.appendChild(div);
+    var res = attempt_x_esm.call(fragment.childNodes, nativeForEach, function spyAssign(item) {
+      spy = item;
+    });
+    return res.threw === false && typeof res.value === 'undefined' && spy === div;
   }
 
-  if (isWorking) {
-    spy = 0;
-    res = attempt_x_esm.call(function getArgs() {
-      /* eslint-disable-next-line prefer-rest-params */
-      return arguments;
-    }(1, 2, 3), nativeForEach, function (item) {
-      array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
+  return true;
+};
 
-      spy += item;
-    }.bind(undefined));
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
-  }
+var array_for_each_x_esm_test6 = function test6() {
+  var isStrict = function returnIsStrict() {
+    /* eslint-disable-next-line babel/no-invalid-this */
+    return true.constructor(this) === false;
+  }();
 
-  if (isWorking) {
-    spy = 0;
-    res = attempt_x_esm.call({
-      0: 1,
-      1: 2,
-      3: 3,
-      4: 4,
-      length: 4
-    }, nativeForEach, function (item) {
-      array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
-
-      spy += item;
-    }.bind(undefined));
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
-  }
-
-  if (isWorking) {
-    var doc = typeof document !== 'undefined' && document;
-
-    if (doc) {
-      spy = null;
-      var fragment = doc.createDocumentFragment();
-      var div = doc.createElement('div');
-      fragment.appendChild(div);
-      res = attempt_x_esm.call(fragment.childNodes, nativeForEach, function (item) {
-        array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
-
-        spy = item;
-      }.bind(undefined));
-      isWorking = res.threw === false && typeof res.value === 'undefined' && spy === div;
-    }
-  }
-
-  if (isWorking) {
-    var isStrict = function returnIsStrict() {
+  if (isStrict) {
+    var spy = null;
+    var res = attempt_x_esm.call([1], nativeForEach, function thisTest() {
       /* eslint-disable-next-line babel/no-invalid-this */
-      return array_for_each_x_esm_castBoolean(this) === false;
-    }();
-
-    if (isStrict) {
-      spy = null;
-      res = attempt_x_esm.call([1], nativeForEach, function () {
-        array_for_each_x_esm_newArrowCheck(this, array_for_each_x_esm_this);
-
-        /* eslint-disable-next-line babel/no-invalid-this */
-        spy = typeof this === 'string';
-      }.bind(undefined), 'x');
-      isWorking = res.threw === false && typeof res.value === 'undefined' && spy === true;
-    }
+      spy = typeof this === 'string';
+    }, 'x');
+    return res.threw === false && typeof res.value === 'undefined' && spy === true;
   }
 
-  if (isWorking) {
-    spy = {};
-    var fn = ['return nativeForEach.call("foo", function (_, __, context) {', 'if (castBoolean(context) === false || typeof context !== "object") {', 'spy.value = true;}});'].join('');
-    /* eslint-disable-next-line no-new-func */
+  return true;
+};
 
-    res = attempt_x_esm(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy);
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
-  }
-}
+var array_for_each_x_esm_test7 = function test7() {
+  var spy = {};
+  var fn = 'return nativeForEach.call("foo", function (_, __, context) {' + 'if (castBoolean(context) === false || typeof context !== "object") {' + 'spy.value = true;}});';
+  /* eslint-disable-next-line no-new-func */
+
+  var res = attempt_x_esm(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy, true.constructor);
+  return res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
+};
+
+var isWorking = true.constructor(nativeForEach) && array_for_each_x_esm_test1() && array_for_each_x_esm_test2() && array_for_each_x_esm_test3() && array_for_each_x_esm_test4() && array_for_each_x_esm_test5() && array_for_each_x_esm_test6() && array_for_each_x_esm_test7();
 /**
  * This method executes a provided function once for each array element.
  *
@@ -1718,14 +1710,14 @@ if (nativeForEach) {
  * @throws {TypeError} If callBack is not a function.
  */
 
-
 var $forEach;
 
-if (nativeForEach) {
+if (isWorking) {
   $forEach = function forEach(array, callBack
   /* , thisArg */
   ) {
-    var args = [callBack];
+    require_object_coercible_x_esm(array);
+    var args = [assert_is_function_x_esm(callBack)];
 
     if (arguments.length > 2) {
       /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */

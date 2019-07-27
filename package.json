@@ -52,6 +52,7 @@
   "dependencies": {
     "assert-is-function-x": "^3.0.17",
     "attempt-x": "^2.0.21",
+    "require-object-coercible-x": "^2.0.25",
     "split-if-boxed-bug-x": "^2.0.21",
     "to-length-x": "^4.0.23",
     "to-object-x": "^2.0.19"

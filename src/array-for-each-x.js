@@ -3,121 +3,120 @@ import splitIfBoxedBug from 'split-if-boxed-bug-x';
 import toLength from 'to-length-x';
 import toObject from 'to-object-x';
 import assertIsFunction from 'assert-is-function-x';
+import requireObjectCoercible from 'require-object-coercible-x';
 
-/** @type {ArrayConstructor} */
-const ArrayCtr = [].constructor;
-/** @type {ObjectConstructor} */
-const castObject = {}.constructor;
-/** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
-const nativeForEach = typeof ArrayCtr.prototype.forEach === 'function' && ArrayCtr.prototype.forEach;
+const nfe = [].forEach;
+const nativeForEach = typeof nfe === 'function' && nfe;
 
-let isWorking;
-
-if (nativeForEach) {
+const test1 = function test1() {
   let spy = 0;
-  let res = attempt.call([1, 2], nativeForEach, (item) => {
+  const res = attempt.call([1, 2], nativeForEach, (item) => {
     spy += item;
   });
 
-  isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 3;
+  return res.threw === false && typeof res.value === 'undefined' && spy === 3;
+};
 
-  if (isWorking) {
-    spy = '';
-    res = attempt.call(castObject('abc'), nativeForEach, (item) => {
+const test2 = function test2() {
+  let spy = '';
+  const res = attempt.call({}.constructor('abc'), nativeForEach, (item) => {
+    spy += item;
+  });
+
+  return res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+};
+
+const test3 = function test3() {
+  let spy = 0;
+  const res = attempt.call(
+    (function getArgs() {
+      /* eslint-disable-next-line prefer-rest-params */
+      return arguments;
+    })(1, 2, 3),
+    nativeForEach,
+    function spyAdd(item) {
       spy += item;
+    },
+  );
+
+  return res.threw === false && typeof res.value === 'undefined' && spy === 6;
+};
+
+const test4 = function test4() {
+  let spy = 0;
+  const res = attempt.call(
+    {
+      0: 1,
+      1: 2,
+      3: 3,
+      4: 4,
+      length: 4,
+    },
+    nativeForEach,
+    function spyAdd(item) {
+      spy += item;
+    },
+  );
+
+  return res.threw === false && typeof res.value === 'undefined' && spy === 6;
+};
+
+const test5 = function test5() {
+  const doc = typeof document !== 'undefined' && document;
+
+  if (doc) {
+    let spy = null;
+    const fragment = doc.createDocumentFragment();
+    const div = doc.createElement('div');
+    fragment.appendChild(div);
+    const res = attempt.call(fragment.childNodes, nativeForEach, function spyAssign(item) {
+      spy = item;
     });
 
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 'abc';
+    return res.threw === false && typeof res.value === 'undefined' && spy === div;
   }
 
-  if (isWorking) {
-    spy = 0;
-    res = attempt.call(
-      (function getArgs() {
-        /* eslint-disable-next-line prefer-rest-params */
-        return arguments;
-      })(1, 2, 3),
+  return true;
+};
+
+const test6 = function test6() {
+  const isStrict = (function returnIsStrict() {
+    /* eslint-disable-next-line babel/no-invalid-this */
+    return true.constructor(this) === false;
+  })();
+
+  if (isStrict) {
+    let spy = null;
+    const res = attempt.call(
+      [1],
       nativeForEach,
-      (item) => {
-        spy += item;
+      function thisTest() {
+        /* eslint-disable-next-line babel/no-invalid-this */
+        spy = typeof this === 'string';
       },
+      'x',
     );
 
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
+    return res.threw === false && typeof res.value === 'undefined' && spy === true;
   }
 
-  if (isWorking) {
-    spy = 0;
-    res = attempt.call(
-      {
-        0: 1,
-        1: 2,
-        3: 3,
-        4: 4,
-        length: 4,
-      },
-      nativeForEach,
-      (item) => {
-        spy += item;
-      },
-    );
+  return true;
+};
 
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy === 6;
-  }
+const test7 = function test7() {
+  const spy = {};
+  const fn =
+    'return nativeForEach.call("foo", function (_, __, context) {' +
+    'if (castBoolean(context) === false || typeof context !== "object") {' +
+    'spy.value = true;}});';
 
-  if (isWorking) {
-    const doc = typeof document !== 'undefined' && document;
+  /* eslint-disable-next-line no-new-func */
+  const res = attempt(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy, true.constructor);
 
-    if (doc) {
-      spy = null;
-      const fragment = doc.createDocumentFragment();
-      const div = doc.createElement('div');
-      fragment.appendChild(div);
-      res = attempt.call(fragment.childNodes, nativeForEach, (item) => {
-        spy = item;
-      });
+  return res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
+};
 
-      isWorking = res.threw === false && typeof res.value === 'undefined' && spy === div;
-    }
-  }
-
-  if (isWorking) {
-    const isStrict = (function returnIsStrict() {
-      /* eslint-disable-next-line babel/no-invalid-this */
-      return castBoolean(this) === false;
-    })();
-
-    if (isStrict) {
-      spy = null;
-      res = attempt.call(
-        [1],
-        nativeForEach,
-        () => {
-          /* eslint-disable-next-line babel/no-invalid-this */
-          spy = typeof this === 'string';
-        },
-        'x',
-      );
-
-      isWorking = res.threw === false && typeof res.value === 'undefined' && spy === true;
-    }
-  }
-
-  if (isWorking) {
-    spy = {};
-    const fn = [
-      'return nativeForEach.call("foo", function (_, __, context) {',
-      'if (castBoolean(context) === false || typeof context !== "object") {',
-      'spy.value = true;}});',
-    ].join('');
-
-    /* eslint-disable-next-line no-new-func */
-    res = attempt(Function('nativeForEach', 'spy', 'castBoolean', fn), nativeForEach, spy);
-
-    isWorking = res.threw === false && typeof res.value === 'undefined' && spy.value !== true;
-  }
-}
+const isWorking = true.constructor(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
 /**
  * This method executes a provided function once for each array element.
@@ -130,9 +129,10 @@ if (nativeForEach) {
  */
 let $forEach;
 
-if (nativeForEach) {
+if (isWorking) {
   $forEach = function forEach(array, callBack /* , thisArg */) {
-    const args = [callBack];
+    requireObjectCoercible(array);
+    const args = [assertIsFunction(callBack)];
 
     if (arguments.length > 2) {
       /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
