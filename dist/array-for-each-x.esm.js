@@ -121,7 +121,7 @@ var patchedNative = function patchedNative() {
   };
 };
 
-var implementation = function implementation() {
+export var implementation = function implementation() {
   return function forEach(array, callBack
   /* , thisArg */
   ) {
@@ -155,7 +155,6 @@ var implementation = function implementation() {
  * @throws {TypeError} If array is null or undefined.
  * @throws {TypeError} If callBack is not a function.
  */
-
 
 var $forEach = isWorking ? patchedNative() : implementation();
 export default $forEach;

@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T21:41:16.300Z",
+  "date": "2019-07-28T14:06:07.912Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
-  "hash": "d71d8dde108266ece27f",
+  "hash": "7c6c4b515cdaa50e1a2d",
   "license": "MIT",
   "version": "3.0.19"
 }
@@ -1593,6 +1593,7 @@ var assert_is_function_x_esm_assertIsFunction = function assertIsFunction(callba
 
 
 // CONCATENATED MODULE: ./dist/array-for-each-x.esm.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return array_for_each_x_esm_implementation; });
 function array_for_each_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 
@@ -1750,7 +1751,6 @@ var array_for_each_x_esm_implementation = function implementation() {
  * @throws {TypeError} If array is null or undefined.
  * @throws {TypeError} If callBack is not a function.
  */
-
 
 var $forEach = isWorking ? array_for_each_x_esm_patchedNative() : array_for_each_x_esm_implementation();
 /* harmony default export */ var array_for_each_x_esm = __webpack_exports__["default"] = ($forEach);
