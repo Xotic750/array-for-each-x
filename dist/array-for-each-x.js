@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-04T15:08:26.036Z",
+  "date": "2019-08-04T20:26:33.459Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
