@@ -84,10 +84,13 @@ var test6 = function test6() {
 
   if (isStrict) {
     var spy = null;
-    var res = attempt.call([1], nativeForEach, function thisTest() {
+
+    var thisTest = function thisTest() {
       /* eslint-disable-next-line babel/no-invalid-this */
       spy = typeof this === 'string';
-    }, 'x');
+    };
+
+    var res = attempt.call([1], nativeForEach, thisTest, 'x');
     return res.threw === false && typeof res.value === 'undefined' && spy === true;
   }
 
@@ -105,46 +108,42 @@ var test7 = function test7() {
 
 var isWorking = toBoolean(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
-var patchedNative = function patchedNative() {
-  return function forEach(array, callBack
-  /* , thisArg */
-  ) {
-    requireObjectCoercible(array);
-    var args = [assertIsFunction(callBack)];
+var patchedNative = function forEach(array, callBack
+/* , thisArg */
+) {
+  requireObjectCoercible(array);
+  var args = [assertIsFunction(callBack)];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeForEach.apply(array, args);
-  };
+  return nativeForEach.apply(array, args);
 };
 
-export var implementation = function implementation() {
-  return function forEach(array, callBack
-  /* , thisArg */
-  ) {
-    var object = toObject(array); // If no callback function or if callback is not a callable function
+export var implementation = function forEach(array, callBack
+/* , thisArg */
+) {
+  var object = toObject(array); // If no callback function or if callback is not a callable function
 
-    assertIsFunction(callBack);
-    var iterable = splitIfBoxedBug(object);
-    var length = toLength(iterable.length);
-    /* eslint-disable-next-line no-void,prefer-rest-params */
+  assertIsFunction(callBack);
+  var iterable = splitIfBoxedBug(object);
+  var length = toLength(iterable.length);
+  /* eslint-disable-next-line no-void,prefer-rest-params */
 
-    var thisArg = arguments.length > 2 ? arguments[2] : void 0;
-    var noThis = typeof thisArg === 'undefined';
+  var thisArg = arguments.length > 2 ? arguments[2] : void 0;
+  var noThis = typeof thisArg === 'undefined';
 
-    for (var i = 0; i < length; i += 1) {
-      if (i in iterable) {
-        if (noThis) {
-          callBack(iterable[i], i, object);
-        } else {
-          callBack.call(thisArg, iterable[i], i, object);
-        }
+  for (var i = 0; i < length; i += 1) {
+    if (i in iterable) {
+      if (noThis) {
+        callBack(iterable[i], i, object);
+      } else {
+        callBack.call(thisArg, iterable[i], i, object);
       }
     }
-  };
+  }
 };
 /**
  * This method executes a provided function once for each array element.
@@ -156,7 +155,7 @@ export var implementation = function implementation() {
  * @throws {TypeError} If callBack is not a function.
  */
 
-var $forEach = isWorking ? patchedNative() : implementation();
+var $forEach = isWorking ? patchedNative : implementation;
 export default $forEach;
 
 //# sourceMappingURL=array-for-each-x.esm.js.map

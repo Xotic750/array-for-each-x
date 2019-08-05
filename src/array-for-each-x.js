@@ -45,19 +45,9 @@ const test3 = function test3() {
 
 const test4 = function test4() {
   let spy = 0;
-  const res = attempt.call(
-    {
-      0: 1,
-      1: 2,
-      3: 3,
-      4: 4,
-      length: 4,
-    },
-    nativeForEach,
-    function spyAdd2(item) {
-      spy += item;
-    },
-  );
+  const res = attempt.call({0: 1, 1: 2, 3: 3, 4: 4, length: 4}, nativeForEach, function spyAdd2(item) {
+    spy += item;
+  });
 
   return res.threw === false && typeof res.value === 'undefined' && spy === 6;
 };
@@ -88,15 +78,13 @@ const test6 = function test6() {
 
   if (isStrict) {
     let spy = null;
-    const res = attempt.call(
-      [1],
-      nativeForEach,
-      function thisTest() {
-        /* eslint-disable-next-line babel/no-invalid-this */
-        spy = typeof this === 'string';
-      },
-      'x',
-    );
+
+    const thisTest = function thisTest() {
+      /* eslint-disable-next-line babel/no-invalid-this */
+      spy = typeof this === 'string';
+    };
+
+    const res = attempt.call([1], nativeForEach, thisTest, 'x');
 
     return res.threw === false && typeof res.value === 'undefined' && spy === true;
   }
@@ -119,40 +107,36 @@ const test7 = function test7() {
 
 const isWorking = toBoolean(nativeForEach) && test1() && test2() && test3() && test4() && test5() && test6() && test7();
 
-const patchedNative = function patchedNative() {
-  return function forEach(array, callBack /* , thisArg */) {
-    requireObjectCoercible(array);
-    const args = [assertIsFunction(callBack)];
+const patchedNative = function forEach(array, callBack /* , thisArg */) {
+  requireObjectCoercible(array);
+  const args = [assertIsFunction(callBack)];
 
-    if (arguments.length > 2) {
-      /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
-      args[1] = arguments[2];
-    }
+  if (arguments.length > 2) {
+    /* eslint-disable-next-line prefer-rest-params,prefer-destructuring */
+    args[1] = arguments[2];
+  }
 
-    return nativeForEach.apply(array, args);
-  };
+  return nativeForEach.apply(array, args);
 };
 
-export const implementation = function implementation() {
-  return function forEach(array, callBack /* , thisArg */) {
-    const object = toObject(array);
-    // If no callback function or if callback is not a callable function
-    assertIsFunction(callBack);
-    const iterable = splitIfBoxedBug(object);
-    const length = toLength(iterable.length);
-    /* eslint-disable-next-line no-void,prefer-rest-params */
-    const thisArg = arguments.length > 2 ? arguments[2] : void 0;
-    const noThis = typeof thisArg === 'undefined';
-    for (let i = 0; i < length; i += 1) {
-      if (i in iterable) {
-        if (noThis) {
-          callBack(iterable[i], i, object);
-        } else {
-          callBack.call(thisArg, iterable[i], i, object);
-        }
+export const implementation = function forEach(array, callBack /* , thisArg */) {
+  const object = toObject(array);
+  // If no callback function or if callback is not a callable function
+  assertIsFunction(callBack);
+  const iterable = splitIfBoxedBug(object);
+  const length = toLength(iterable.length);
+  /* eslint-disable-next-line no-void,prefer-rest-params */
+  const thisArg = arguments.length > 2 ? arguments[2] : void 0;
+  const noThis = typeof thisArg === 'undefined';
+  for (let i = 0; i < length; i += 1) {
+    if (i in iterable) {
+      if (noThis) {
+        callBack(iterable[i], i, object);
+      } else {
+        callBack.call(thisArg, iterable[i], i, object);
       }
     }
-  };
+  }
 };
 
 /**
@@ -164,6 +148,6 @@ export const implementation = function implementation() {
  * @throws {TypeError} If array is null or undefined.
  * @throws {TypeError} If callBack is not a function.
  */
-const $forEach = isWorking ? patchedNative() : implementation();
+const $forEach = isWorking ? patchedNative : implementation;
 
 export default $forEach;
