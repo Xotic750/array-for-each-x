@@ -19,7 +19,7 @@ const test1 = function test1() {
 
 const test2 = function test2() {
   let spy = '';
-  const res = attempt.call(toBoolean('abc'), nativeForEach, (item) => {
+  const res = attempt.call(toObject('abc'), nativeForEach, (item) => {
     spy += item;
   });
 

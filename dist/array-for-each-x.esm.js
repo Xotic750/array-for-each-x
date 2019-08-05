@@ -25,7 +25,7 @@ var test2 = function test2() {
   var _this2 = this;
 
   var spy = '';
-  var res = attempt.call(toBoolean('abc'), nativeForEach, function (item) {
+  var res = attempt.call(toObject('abc'), nativeForEach, function (item) {
     _newArrowCheck(this, _this2);
 
     spy += item;
