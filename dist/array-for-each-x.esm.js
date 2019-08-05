@@ -1,12 +1,11 @@
 function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
 
 import attempt from 'attempt-x';
-import splitIfBoxedBug from 'split-if-boxed-bug-x';
-import toLength from 'to-length-x';
 import toObject from 'to-object-x';
 import assertIsFunction from 'assert-is-function-x';
 import requireObjectCoercible from 'require-object-coercible-x';
 import toBoolean from 'to-boolean-x';
+import all from 'array-all-x';
 var nfe = [].forEach;
 var nativeForEach = typeof nfe === 'function' && nfe;
 
@@ -26,7 +25,7 @@ var test2 = function test2() {
   var _this2 = this;
 
   var spy = '';
-  var res = attempt.call({}.constructor('abc'), nativeForEach, function (item) {
+  var res = attempt.call(toBoolean('abc'), nativeForEach, function (item) {
     _newArrowCheck(this, _this2);
 
     spy += item;
@@ -128,22 +127,21 @@ export var implementation = function forEach(array, callBack
   var object = toObject(array); // If no callback function or if callback is not a callable function
 
   assertIsFunction(callBack);
-  var iterable = splitIfBoxedBug(object);
-  var length = toLength(iterable.length);
-  /* eslint-disable-next-line no-void,prefer-rest-params */
 
-  var thisArg = arguments.length > 2 ? arguments[2] : void 0;
-  var noThis = typeof thisArg === 'undefined';
+  var iteratee = function iteratee() {
+    /* eslint-disable-next-line prefer-rest-params */
+    var i = arguments[1];
+    /* eslint-disable-next-line prefer-rest-params */
 
-  for (var i = 0; i < length; i += 1) {
-    if (i in iterable) {
-      if (noThis) {
-        callBack(iterable[i], i, object);
-      } else {
-        callBack.call(thisArg, iterable[i], i, object);
-      }
+    if (i in arguments[2]) {
+      /* eslint-disable-next-line prefer-rest-params,babel/no-invalid-this */
+      callBack.call(this, arguments[0], i, object);
     }
-  }
+  };
+  /* eslint-disable-next-line prefer-rest-params */
+
+
+  all(object, iteratee, arguments[2]);
 };
 /**
  * This method executes a provided function once for each array element.

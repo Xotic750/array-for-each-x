@@ -1,10 +1,9 @@
 import attempt from 'attempt-x';
-import splitIfBoxedBug from 'split-if-boxed-bug-x';
-import toLength from 'to-length-x';
 import toObject from 'to-object-x';
 import assertIsFunction from 'assert-is-function-x';
 import requireObjectCoercible from 'require-object-coercible-x';
 import toBoolean from 'to-boolean-x';
+import all from 'array-all-x';
 
 const nfe = [].forEach;
 const nativeForEach = typeof nfe === 'function' && nfe;
@@ -20,7 +19,7 @@ const test1 = function test1() {
 
 const test2 = function test2() {
   let spy = '';
-  const res = attempt.call({}.constructor('abc'), nativeForEach, (item) => {
+  const res = attempt.call(toBoolean('abc'), nativeForEach, (item) => {
     spy += item;
   });
 
@@ -123,20 +122,19 @@ export const implementation = function forEach(array, callBack /* , thisArg */) 
   const object = toObject(array);
   // If no callback function or if callback is not a callable function
   assertIsFunction(callBack);
-  const iterable = splitIfBoxedBug(object);
-  const length = toLength(iterable.length);
-  /* eslint-disable-next-line no-void,prefer-rest-params */
-  const thisArg = arguments.length > 2 ? arguments[2] : void 0;
-  const noThis = typeof thisArg === 'undefined';
-  for (let i = 0; i < length; i += 1) {
-    if (i in iterable) {
-      if (noThis) {
-        callBack(iterable[i], i, object);
-      } else {
-        callBack.call(thisArg, iterable[i], i, object);
-      }
+  const iteratee = function iteratee() {
+    /* eslint-disable-next-line prefer-rest-params */
+    const i = arguments[1];
+
+    /* eslint-disable-next-line prefer-rest-params */
+    if (i in arguments[2]) {
+      /* eslint-disable-next-line prefer-rest-params,babel/no-invalid-this */
+      callBack.call(this, arguments[0], i, object);
     }
-  }
+  };
+
+  /* eslint-disable-next-line prefer-rest-params */
+  all(object, iteratee, arguments[2]);
 };
 
 /**

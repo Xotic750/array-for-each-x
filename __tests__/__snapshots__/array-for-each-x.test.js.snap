@@ -1,7 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`forEach should throw when array is null or undefined 1`] = `"Cannot call method on undefined"`;
+exports[`forEach 0 should throw when array is null or undefined 1`] = `"Cannot call method on undefined"`;
 
-exports[`forEach should throw when array is null or undefined 2`] = `"Cannot call method on undefined"`;
+exports[`forEach 0 should throw when array is null or undefined 2`] = `"Cannot call method on undefined"`;
 
-exports[`forEach should throw when array is null or undefined 3`] = `"Cannot call method on null"`;
+exports[`forEach 0 should throw when array is null or undefined 3`] = `"Cannot call method on null"`;
+
+exports[`forEach 1 should throw when array is null or undefined 1`] = `"Cannot call method on undefined"`;
+
+exports[`forEach 1 should throw when array is null or undefined 2`] = `"Cannot call method on undefined"`;
+
+exports[`forEach 1 should throw when array is null or undefined 3`] = `"Cannot call method on null"`;
