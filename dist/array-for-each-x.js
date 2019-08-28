@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-28T15:26:47.439Z",
+  "date": "2019-08-28T17:24:24.695Z",
   "describe": "",
   "description": "Executes a provided function once for each array element.",
   "file": "array-for-each-x.js",
   "hash": "043fe4c3b332fd32e69b",
   "license": "MIT",
-  "version": "3.1.1"
+  "version": "3.1.2"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
